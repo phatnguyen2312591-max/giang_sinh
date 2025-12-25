@@ -7,13 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background: #051937;
             background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             color: white;
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Không cho cuộn trang */
+            overflow: hidden;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,17 +23,22 @@
         /* --- Màn hình 1: Hộp quà --- */
         #gift-screen {
             cursor: pointer;
-            transition: transform 0.3s;
             z-index: 100;
+            transition: all 0.3s;
         }
         
-        #gift-screen:hover {
-            transform: scale(1.1); /* Phóng to nhẹ khi di chuột vào */
-        }
-
+        /* Trạng thái bình thường: Rung nhẹ */
         .gift-box {
             font-size: 150px;
-            animation: shake 2s infinite; /* Hộp quà rung rinh mời gọi */
+            animation: shake 2s infinite; 
+            display: inline-block;
+            transition: all 0.5s;
+        }
+
+        /* Trạng thái SẮP NỔ: Phình to, rung mạnh, hóa đỏ */
+        .gift-exploding {
+            animation: violent-explode 0.8s forwards ease-in !important; /* !important để ép buộc chạy */
+            pointer-events: none; /* Khóa không cho bấm nữa */
         }
 
         .click-hint {
@@ -44,9 +48,9 @@
             animation: blink 1.5s infinite;
         }
 
-        /* --- Màn hình 2: Lời chúc (Ban đầu ẩn đi) --- */
+        /* --- Màn hình 2: Lời chúc --- */
         #celebration-screen {
-            display: none; /* Ẩn mặc định */
+            display: none;
             text-align: center;
             width: 90%;
             max-width: 600px;
@@ -68,26 +72,7 @@
             margin: 10px 0;
         }
 
-        /* Hiệu ứng lắc lư chung */
-        .wobble {
-            animation: wobble 2s infinite ease-in-out;
-            display: inline-block;
-        }
-
-        /* Hàng icon phụ họa */
-        .icons-row {
-            font-size: 3rem;
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .icon-item {
-            animation: wobble 3s infinite ease-in-out; /* Lắc chậm hơn ảnh chính */
-        }
-
-        /* --- Các hiệu ứng Animation (Chuyển động) --- */
+        /* Animation Keyframes */
         @keyframes shake {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(5deg); }
@@ -96,62 +81,44 @@
             100% { transform: rotate(0deg); }
         }
 
+        /* Hiệu ứng NỔ TUNG: Rung cực mạnh và phình to */
+        @keyframes violent-explode {
+            0% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+            20% { transform: scale(1.2) rotate(-10deg); filter: hue-rotate(90deg); } /* Đổi màu */
+            40% { transform: scale(1.4) rotate(10deg); filter: hue-rotate(180deg); }
+            60% { transform: scale(1.6) rotate(-10deg); filter: hue-rotate(270deg); opacity: 0.8; }
+            80% { transform: scale(1.8) rotate(10deg); filter: hue-rotate(360deg); opacity: 0.5; }
+            100% { transform: scale(3); opacity: 0; } /* Biến mất */
+        }
+
         @keyframes wobble {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(10deg); }
             75% { transform: rotate(-10deg); }
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* Hiệu ứng tuyết rơi */
-        .snowflake {
-            position: fixed;
-            top: -10px;
-            color: white;
-            user-select: none;
-            pointer-events: none;
-            animation-name: fall;
-            animation-timing-function: linear;
-            z-index: 1;
-        }
+        /* Các class phụ trợ */
+        .wobble { animation: wobble 2s infinite ease-in-out; display: inline-block; }
+        .icons-row { font-size: 3rem; margin-top: 20px; display: flex; justify-content: center; gap: 20px; }
+        .icon-item { animation: wobble 3s infinite ease-in-out; }
+        .snowflake { position: fixed; top: -10px; color: white; user-select: none; pointer-events: none; animation-name: fall; animation-timing-function: linear; z-index: 1; }
+        @keyframes fall { to { transform: translateY(105vh); } }
 
-        @keyframes fall {
-            to { transform: translateY(105vh); }
-            /* --- (MỚI) Hiệu ứng hộp quà nổ tung --- */
-        /* Định nghĩa kiểu rung lắc mạnh và phóng to rồi biến mất */
-        @keyframes violent-explode {
-            0% { transform: scale(1) rotate(0deg); opacity: 1; }
-            20% { transform: scale(1.1) rotate(-5deg) translate(-5px, 5px); color: red; } /* Rung mạnh */
-            40% { transform: scale(1.2) rotate(5deg) translate(5px, -5px); }
-            60% { transform: scale(1.4) rotate(-5deg) translate(-5px, 5px); opacity: 0.8; } /* Phình to */
-            100% { transform: scale(2) rotate(0deg); opacity: 0; } /* Biến mất hẳn */
-        }
-
-        /* Class này sẽ được thêm vào bằng Javascript khi bấm */
-        .gift-exploding {
-            /* Ghi đè hiệu ứng rung nhẹ cũ */
-            animation: violent-explode 0.8s forwards ease-in !important; 
-            pointer-events: none; /* Không cho bấm lại lần nữa */
-        }
     </style>
 </head>
 <body>
 
     <div id="gift-screen" onclick="openGift()">
-        <div class="gift-box">🎁</div>
+        <div class="gift-box">🎁</div> 
         <div class="click-hint">Nhấn vào hộp quà để mở!</div>
     </div>
 
     <div id="celebration-screen">
         <img src="noel.jpg" class="main-photo wobble" alt="Ảnh Giáng Sinh">
-        
         <h1 class="wobble">Merry Christmas! 🎄</h1>
         <p>Chúc bạn một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui!</p>
-
         <div class="icons-row">
             <div class="icon-item">🎅</div>
             <div class="icon-item">⛄</div>
@@ -163,68 +130,60 @@
     <audio id="bgMusic" loop>
         <source src="nhac.mp3" type="audio/mpeg">
     </audio>
+
     <audio id="explosionSound">
-    <source src="phaohoa.mp3" type="audio/mpeg">
-</audio>
+        <source src="phaohoa.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         function openGift() {
-            // 1. Ẩn dòng chữ gợi ý ngay lập tức
+            // 1. Ẩn gợi ý ngay
             var hint = document.querySelector('.click-hint');
             if (hint) hint.style.display = 'none';
 
-            // 2. Tìm hộp quà và thêm hiệu ứng "sắp nổ"
+            // 2. Kích hoạt hiệu ứng "Sắp nổ"
             var giftBox = document.querySelector('.gift-box');
-            // Thêm class .gift-exploding để kích hoạt CSS chúng ta vừa thêm ở Bước 1
-            giftBox.classList.add('gift-exploding'); 
+            if (giftBox) {
+                // Thêm class này để CSS kích hoạt animation violent-explode
+                giftBox.classList.add('gift-exploding');
+            }
 
-            // 3. Bắn một ít pháo hoa nhỏ ngay tại chỗ hộp quà cho kịch tính
-            confetti({
-                particleCount: 50,
-                spread: 100,
-                origin: { y: 0.5 }, // Bắn từ giữa màn hình
-                colors: ['#ff0000', '#ffa500'], // Màu đỏ cam như lửa
-                startVelocity: 30,
-                gravity: 1.2
-            });
+            // 3. Bắn pháo hoa nhỏ mồi lửa
+            confetti({ particleCount: 50, spread: 100, origin: { y: 0.5 }, colors: ['#ff0000', '#ffa500'], startVelocity: 30 });
 
-            // --- CHỜ 0.8 GIÂY (800ms) CHO HỘP QUÀ RUNG LẮC XONG MỚI NỔ THẬT ---
-            // (Thời gian 800ms này khớp với animation: violent-explode 0.8s ở CSS)
+            // 4. Chờ 0.8 giây cho hiệu ứng nổ chạy xong mới hiện quà
             setTimeout(function() {
                 
-                // --- BÂY GIỜ MỚI LÀ LÚC "BÙM" THẬT SỰ ---
-
-                // Ẩn màn hình quà đi
+                // Ẩn màn hình quà
                 document.getElementById('gift-screen').style.display = 'none';
                 // Hiện màn hình chúc mừng
                 document.getElementById('celebration-screen').style.display = 'block';
 
-                // Phát tiếng nổ lớn
+                // Phát tiếng nổ
                 var explosion = document.getElementById('explosionSound');
                 if (explosion) {
                     explosion.volume = 1.0;
-                    explosion.currentTime = 0; // Tua lại từ đầu để chắc chắn phát
-                    explosion.play().catch(e => console.log("Chưa tải được âm thanh nổ"));
+                    explosion.currentTime = 0;
+                    explosion.play().catch(e => console.log("Lỗi phát tiếng nổ"));
                 }
 
-                // Phát nhạc nền sau một chút
+                // Phát nhạc nền
                 setTimeout(function() {
                     var music = document.getElementById('bgMusic');
                     if (music) {
                         music.volume = 0.7;
-                        music.play().catch(e => console.log("Chưa tải được nhạc nền"));
+                        music.play().catch(e => console.log("Lỗi phát nhạc"));
                     }
                 }, 300);
 
-                // Hiệu ứng pháo hoa lớn tưng bừng
+                // Hiệu ứng ăn mừng
                 fireworks();
-                // Hiệu ứng tuyết rơi
                 setInterval(createSnowflake, 100);
 
-            }, 800); // <-- Sau 800ms thì thực hiện đoạn trong ngoặc này
+            }, 800); // 800ms trùng khớp với thời gian animation trong CSS
         }
 
-        // Hàm bắn pháo hoa
+        // Hàm pháo hoa lớn
         function fireworks() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
@@ -232,13 +191,8 @@
 
             var interval = setInterval(function() {
                 var timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
-
+                if (timeLeft <= 0) return clearInterval(interval);
                 var particleCount = 50 * (timeLeft / duration);
-                // Bắn từ 2 bên ngẫu nhiên
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
             }, 250);
         }
@@ -247,14 +201,12 @@
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
-            snowflake.innerHTML = '❄'; // Có thể đổi thành ❅ hoặc ❆
+            snowflake.innerHTML = '❄';
             snowflake.style.left = Math.random() * 100 + 'vw';
             snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
             snowflake.style.opacity = Math.random();
             snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
-            
             document.body.appendChild(snowflake);
-            
             setTimeout(() => { snowflake.remove(); }, 5000);
         }
     </script>
