@@ -18,15 +18,18 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin: 0;
         }
 
-        h1 { font-size: 3rem; text-shadow: 2px 2px 10px #ff0000; }
+        h1 { font-size: 3rem; text-shadow: 2px 2px 10px #ff0000; z-index: 10; }
+        p { z-index: 10; }
 
         /* Hiệu ứng hình ảnh lắc lư */
         .wobble {
             width: 150px;
             animation: wobble 2s infinite ease-in-out;
             cursor: pointer;
+            z-index: 10;
         }
 
         @keyframes wobble {
@@ -37,30 +40,110 @@
             100% { transform: rotate(0deg); }
         }
 
-        .container { position: relative; }
+        /* Hiệu ứng tuyết rơi */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            user-select: none;
+            z-index: 5;
+            pointer-events: none;
+            animation-name: fall;
+            animation-timing-function: linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            border: none;
+            background: #ff0000;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        button:hover { background: #cc0000; }
     </style>
 </head>
 <body>
+
+    <audio id="christmasMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát nhạc.
+    </audio>
 
     <div class="container">
         <img src="https://png.pngtree.com/png-vector/20231109/ourmid/pngtree-christmas-tree-clip-art-png-image_10432363.png" class="wobble" alt="Noel">
         <h1>Merry Christmas! 🎄</h1>
         <p>Chúc bạn một mùa Giáng sinh ấm áp và an lành.</p>
-        <button onclick="launchExplosion()" style="padding: 10px 20px; border-radius: 20px; border: none; background: #ff0000; color: white; cursor: pointer;">Bấm để nhận quà!</button>
+        <button onclick="startCelebration()">🎁 Bấm để nhận quà & nghe nhạc!</button>
     </div>
 
     <script>
-        // Hiệu ứng phát nổ khi trang web load
-        window.onload = function() {
-            launchExplosion();
-        };
+        // Hàm tạo tuyết rơi
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // Tốc độ rơi 2-5s
+            snowflake.style.opacity = Math.random();
+            snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+            
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
+        }
 
-        function launchExplosion() {
+        // Tạo tuyết liên tục mỗi 200ms
+        setInterval(createSnowflake, 200);
+
+        // Hàm xử lý khi bấm nút
+        function startCelebration() {
+            // 1. Phát nhạc
+            const music = document.getElementById('christmasMusic');
+            music.play();
+
+            // 2. Hiệu ứng pháo hoa nổ
             confetti({
-                particleCount: 150,
-                spread: 70,
+                particleCount: 200,
+                spread: 100,
                 origin: { y: 0.6 }
             });
+
+            // 3. Pháo hoa liên tục trong 3 giây
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 }
+              });
+              confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 }
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
         }
     </script>
 </body>
