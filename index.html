@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Món Quà Giáng Sinh Của Bạn</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0; padding: 0;
@@ -64,12 +65,26 @@
             border: 5px solid white;
             margin-bottom: 20px;
         }
+ h1, p {
+    /* Áp dụng font Sacramento */
+    font-family: 'Sacramento', cursive;
+    /* Font này vốn đã nghiêng và mảnh nên không cần chỉnh thêm italic */
+    font-weight: 400; 
+}
 
-        h1 {
-            font-size: 2.5rem;
-            color: #ffeb3b;
-            text-shadow: 2px 2px 4px #ff0000;
-            margin: 10px 0;
+h1 {
+    font-size: 4rem; /* Tăng size lớn vì Sacramento nét rất mảnh */
+    color: #fffce0; /* Màu vàng kem nhẹ nhàng */
+    text-shadow: 1px 1px 10px rgba(255, 255, 255, 0.3);
+    margin: 15px 0;
+    line-height: 1.2;
+}
+
+p {
+    font-size: 1.8rem; /* Tăng size để dễ đọc hơn */
+    color: #ffffff;
+    letter-spacing: 1px;
+}
         }
 
         /* Animation Keyframes */
