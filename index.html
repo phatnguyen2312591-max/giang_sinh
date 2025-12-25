@@ -154,26 +154,42 @@
 
     <script>
         function openGift() {
-            // 1. Ẩn hộp quà
-            document.getElementById('gift-screen').style.display = 'none';
-            // --- Code thêm tiếng pháo nổ ---
-    var explosion = document.getElementById('explosionSound');
-    explosion.volume = 1.0; // Chỉnh âm lượng to nhất
-    explosion.play();
-            
-            // 2. Hiện màn hình chúc mừng
-            const celebration = document.getElementById('celebration-screen');
-            celebration.style.display = 'block';
+            // 1. (Mới) Ẩn dòng chữ "Nhấn vào..." ngay lập tức để người dùng biết đã bấm
+            var hint = document.querySelector('.click-hint');
+            if (hint) hint.style.display = 'none';
 
-            // 3. Phát nhạc
-            const music = document.getElementById('bgMusic');
-            music.play();
+            // 2. (Mới) Lệnh chờ 2 giây (2000 mili giây) trước khi nổ
+            setTimeout(function() {
+                
+                // --- BẮT ĐẦU CÁC HÀNH ĐỘNG CŨ (Đã được đưa vào trong lệnh chờ) ---
 
-            // 4. Bắn pháo hoa (Hiệu ứng nổ)
-            fireworks();
+                // Ẩn hộp quà, hiện lời chúc
+                document.getElementById('gift-screen').style.display = 'none';
+                document.getElementById('celebration-screen').style.display = 'block';
 
-            // 5. Bắt đầu tuyết rơi
-            setInterval(createSnowflake, 100);
+                // Phát tiếng pháo nổ
+                var explosion = document.getElementById('explosionSound');
+                if (explosion) {
+                    explosion.volume = 1.0;
+                    explosion.play();
+                }
+
+                // Phát nhạc nền (Sau khi nổ 0.5s thì nhạc lên)
+                setTimeout(function() {
+                    var music = document.getElementById('bgMusic');
+                    if (music) {
+                        music.volume = 0.7;
+                        music.play();
+                    }
+                }, 500);
+
+                // Hiệu ứng hình ảnh
+                fireworks();
+                setInterval(createSnowflake, 100);
+
+                // --- KẾT THÚC CÁC HÀNH ĐỘNG CŨ ---
+
+            }, 2000); // <-- Số 2000 ở đây là 2 giây. Bạn có thể sửa thành 3000 nếu muốn chờ lâu hơn.
         }
 
         // Hàm bắn pháo hoa
