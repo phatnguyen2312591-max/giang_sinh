@@ -105,6 +105,16 @@
         .icon-item { animation: wobble 2s infinite ease-in-out; }
         .snowflake { position: fixed; top: -10px; color: white; user-select: none; pointer-events: none; animation-name: fall; animation-timing-function: linear; z-index: 1; }
         @keyframes fall { to { transform: translateY(105vh); } }
+        /* --- (MỚI) Class cho các ảnh trang trí bay lơ lửng --- */
+        .decor-img {
+            position: absolute; /* Cho phép đặt đâu tùy thích */
+            z-index: 40; /* Nằm dưới ảnh chính (z-index 50) để không che mất nội dung */
+        }
+        
+        /* Mẹo nhỏ: Khi màn hình điện thoại quá nhỏ, ẩn bớt các ảnh ở góc đi cho đỡ rối */
+        @media (max-width: 600px) {
+            .hide-on-mobile { display: none; }
+        }
 
     </style>
 </head>
@@ -116,6 +126,26 @@
     </div>
 
     <div id="celebration-screen">
+        <div id="celebration-screen">
+        <img src="https://cdn-icons-png.flaticon.com/512/3638/3638626.png" class="decor-img wobble" style="top: 5%; left: 5%; width: 80px;" alt="Kẹo">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/3638/3638567.png" class="decor-img wobble" style="top: 8%; right: 5%; width: 90px;" alt="Chuông">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/3638/3638594.png" class="decor-img wobble hide-on-mobile" style="bottom: 15%; left: 8%; width: 70px;" alt="Tất">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/3638/3638645.png" class="decor-img wobble" style="bottom: 10%; right: 10%; width: 100px;" alt="Cây thông nhỏ">
+
+        <img src="noel.jpg" class="main-photo wobble" alt="Ảnh Giáng Sinh">
+        <h1 class="wobble">Merry Christmas! 🎄</h1>
+        ```
+
+*Chú ý: Tôi đã dùng link ảnh mẫu trên mạng để bạn test trước. Sau khi thấy ưng ý, bạn hãy thay `src="..."` bằng tên file ảnh bạn đã tải lên GitHub (ví dụ: `keo.png`).*
+
+### Cách tùy chỉnh:
+* **Muốn to/nhỏ:** Sửa số ở `width: 80px;`.
+* **Muốn di chuyển vị trí:** Thay đổi số phần trăm ở `top`, `left`, v.v... Ví dụ muốn nó dịch vào giữa hơn thì tăng `left: 20%`.
+
+Bạn hãy thử thêm vào và sáng tạo vị trí theo ý thích nhé! Trang web giờ đây sẽ trông như một bữa tiệc thực sự rồi đó.
         <img src="noel.jpg" class="main-photo wobble" alt="Ảnh Giáng Sinh">
         <h1 class="wobble">Merry Christmas! 🎄</h1>
         <p>Chúc bạn một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui!</p>
