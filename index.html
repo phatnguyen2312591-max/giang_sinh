@@ -3,41 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giáng Sinh An Lành!</title>
+    <title>Món Quà Giáng Sinh Của Bạn</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body {
+            margin: 0;
+            padding: 0;
             background: #051937;
             background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
             color: white;
-            text-align: center;
             font-family: 'Arial', sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Không cho cuộn trang */
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 0;
+            flex-direction: column;
         }
 
-        h1 { font-size: 3rem; text-shadow: 2px 2px 10px #ff0000; z-index: 10; }
-        p { z-index: 10; }
-
-        /* Hiệu ứng hình ảnh lắc lư */
-        .wobble {
-            width: 150px;
-            animation: wobble 2s infinite ease-in-out;
+        /* --- Màn hình 1: Hộp quà --- */
+        #gift-screen {
             cursor: pointer;
-            z-index: 10;
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+        
+        #gift-screen:hover {
+            transform: scale(1.1); /* Phóng to nhẹ khi di chuột vào */
+        }
+
+        .gift-box {
+            font-size: 150px;
+            animation: shake 2s infinite; /* Hộp quà rung rinh mời gọi */
+        }
+
+        .click-hint {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            animation: blink 1.5s infinite;
+        }
+
+        /* --- Màn hình 2: Lời chúc (Ban đầu ẩn đi) --- */
+        #celebration-screen {
+            display: none; /* Ẩn mặc định */
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            z-index: 50;
+        }
+
+        .main-photo {
+            width: 250px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            border: 5px solid white;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px #ff0000;
+            margin: 10px 0;
+        }
+
+        /* Hiệu ứng lắc lư chung */
+        .wobble {
+            animation: wobble 2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        /* Hàng icon phụ họa */
+        .icons-row {
+            font-size: 3rem;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .icon-item {
+            animation: wobble 3s infinite ease-in-out; /* Lắc chậm hơn ảnh chính */
+        }
+
+        /* --- Các hiệu ứng Animation (Chuyển động) --- */
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
         }
 
         @keyframes wobble {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(15deg); }
-            50% { transform: rotate(0deg); }
-            75% { transform: rotate(-15deg); }
-            100% { transform: rotate(0deg); }
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         /* Hiệu ứng tuyết rơi */
@@ -45,105 +112,95 @@
             position: fixed;
             top: -10px;
             color: white;
-            font-size: 1em;
             user-select: none;
-            z-index: 5;
             pointer-events: none;
             animation-name: fall;
             animation-timing-function: linear;
+            z-index: 1;
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(105vh);
-            }
+            to { transform: translateY(105vh); }
         }
-
-        button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 30px;
-            border: none;
-            background: #ff0000;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        button:hover { background: #cc0000; }
     </style>
 </head>
 <body>
 
-    <audio id="christmasMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        Trình duyệt của bạn không hỗ trợ phát nhạc.
-    </audio>
-
-    <div class="container">
-        <img src="z7365647344730_d9def0f950d38f6dbe5f7f0972c2acf9.jpg" class="wobble" style="width: 250px; border-radius: 15px;" alt="Noel">
-        <h1> 🎄 Giáng sinh an lành nha Quyên 🎄 </h1>
-        <p>
-        <button onclick="startCelebration()">🎁 Bấm để nhận quà & nghe nhạc!</button>
+    <div id="gift-screen" onclick="openGift()">
+        <div class="gift-box">🎁</div>
+        <div class="click-hint">Nhấn vào hộp quà để mở!</div>
     </div>
 
+    <div id="celebration-screen">
+        <img src="noel.jpg" class="main-photo wobble" alt="Ảnh Giáng Sinh">
+        
+        <h1 class="wobble">Merry Christmas! 🎄</h1>
+        <p>Chúc bạn một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui!</p>
+
+        <div class="icons-row">
+            <div class="icon-item">🎅</div>
+            <div class="icon-item">⛄</div>
+            <div class="icon-item">🦌</div>
+            <div class="icon-item">🔔</div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Hàm tạo tuyết rơi
+        function openGift() {
+            // 1. Ẩn hộp quà
+            document.getElementById('gift-screen').style.display = 'none';
+            
+            // 2. Hiện màn hình chúc mừng
+            const celebration = document.getElementById('celebration-screen');
+            celebration.style.display = 'block';
+
+            // 3. Phát nhạc
+            const music = document.getElementById('bgMusic');
+            music.play();
+
+            // 4. Bắn pháo hoa (Hiệu ứng nổ)
+            fireworks();
+
+            // 5. Bắt đầu tuyết rơi
+            setInterval(createSnowflake, 100);
+        }
+
+        // Hàm bắn pháo hoa
+        function fireworks() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                // Bắn từ 2 bên ngẫu nhiên
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // Hàm tạo tuyết
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
-            snowflake.innerHTML = '❄';
+            snowflake.innerHTML = '❄'; // Có thể đổi thành ❅ hoặc ❆
             snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // Tốc độ rơi 2-5s
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
             snowflake.style.opacity = Math.random();
-            snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+            snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
             
             document.body.appendChild(snowflake);
             
-            setTimeout(() => {
-                snowflake.remove();
-            }, 5000);
-        }
-
-        // Tạo tuyết liên tục mỗi 200ms
-        setInterval(createSnowflake, 200);
-
-        // Hàm xử lý khi bấm nút
-        function startCelebration() {
-            // 1. Phát nhạc
-            const music = document.getElementById('christmasMusic');
-            music.play();
-
-            // 2. Hiệu ứng pháo hoa nổ
-            confetti({
-                particleCount: 200,
-                spread: 100,
-                origin: { y: 0.6 }
-            });
-
-            // 3. Pháo hoa liên tục trong 3 giây
-            var duration = 3 * 1000;
-            var end = Date.now() + duration;
-
-            (function frame() {
-              confetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 }
-              });
-              confetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 }
-              });
-
-              if (Date.now() < end) {
-                requestAnimationFrame(frame);
-              }
-            }());
+            setTimeout(() => { snowflake.remove(); }, 5000);
         }
     </script>
 </body>
