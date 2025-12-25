@@ -148,11 +148,18 @@
     <audio id="bgMusic" loop>
         <source src="nhac.mp3" type="audio/mpeg">
     </audio>
+    <audio id="explosionSound">
+    <source src="phaohoa.mp3" type="audio/mpeg">
+</audio>
 
     <script>
         function openGift() {
             // 1. Ẩn hộp quà
             document.getElementById('gift-screen').style.display = 'none';
+            // --- Code thêm tiếng pháo nổ ---
+    var explosion = document.getElementById('explosionSound');
+    explosion.volume = 1.0; // Chỉnh âm lượng to nhất
+    explosion.play();
             
             // 2. Hiện màn hình chúc mừng
             const celebration = document.getElementById('celebration-screen');
