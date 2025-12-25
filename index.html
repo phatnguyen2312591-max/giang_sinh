@@ -157,6 +157,12 @@
             // 1. (Mới) Ẩn dòng chữ "Nhấn vào..." ngay lập tức để người dùng biết đã bấm
             var hint = document.querySelector('.click-hint');
             if (hint) hint.style.display = 'none';
+             // Phát tiếng pháo nổ
+                var explosion = document.getElementById('explosionSound');
+                if (explosion) {
+                    explosion.volume = 1.0;
+                    explosion.play();
+                }
 
             // 2. (Mới) Lệnh chờ 2 giây (2000 mili giây) trước khi nổ
             setTimeout(function() {
@@ -167,12 +173,7 @@
                 document.getElementById('gift-screen').style.display = 'none';
                 document.getElementById('celebration-screen').style.display = 'block';
 
-                // Phát tiếng pháo nổ
-                var explosion = document.getElementById('explosionSound');
-                if (explosion) {
-                    explosion.volume = 1.0;
-                    explosion.play();
-                }
+               
 
                 // Phát nhạc nền (Sau khi nổ 0.5s thì nhạc lên)
                 setTimeout(function() {
