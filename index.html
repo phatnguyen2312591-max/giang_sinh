@@ -121,6 +121,22 @@
 
         @keyframes fall {
             to { transform: translateY(105vh); }
+            /* --- (MỚI) Hiệu ứng hộp quà nổ tung --- */
+        /* Định nghĩa kiểu rung lắc mạnh và phóng to rồi biến mất */
+        @keyframes violent-explode {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            20% { transform: scale(1.1) rotate(-5deg) translate(-5px, 5px); color: red; } /* Rung mạnh */
+            40% { transform: scale(1.2) rotate(5deg) translate(5px, -5px); }
+            60% { transform: scale(1.4) rotate(-5deg) translate(-5px, 5px); opacity: 0.8; } /* Phình to */
+            100% { transform: scale(2) rotate(0deg); opacity: 0; } /* Biến mất hẳn */
+        }
+
+        /* Class này sẽ được thêm vào bằng Javascript khi bấm */
+        .gift-exploding {
+            /* Ghi đè hiệu ứng rung nhẹ cũ */
+            animation: violent-explode 0.8s forwards ease-in !important; 
+            pointer-events: none; /* Không cho bấm lại lần nữa */
+        }
         }
     </style>
 </head>
@@ -154,43 +170,59 @@
 
     <script>
         function openGift() {
-            // 1. (Mới) Ẩn dòng chữ "Nhấn vào..." ngay lập tức để người dùng biết đã bấm
+            // 1. Ẩn dòng chữ gợi ý ngay lập tức
             var hint = document.querySelector('.click-hint');
             if (hint) hint.style.display = 'none';
-             // Phát tiếng pháo nổ
+
+            // 2. Tìm hộp quà và thêm hiệu ứng "sắp nổ"
+            var giftBox = document.querySelector('.gift-box');
+            // Thêm class .gift-exploding để kích hoạt CSS chúng ta vừa thêm ở Bước 1
+            giftBox.classList.add('gift-exploding'); 
+
+            // 3. Bắn một ít pháo hoa nhỏ ngay tại chỗ hộp quà cho kịch tính
+            confetti({
+                particleCount: 50,
+                spread: 100,
+                origin: { y: 0.5 }, // Bắn từ giữa màn hình
+                colors: ['#ff0000', '#ffa500'], // Màu đỏ cam như lửa
+                startVelocity: 30,
+                gravity: 1.2
+            });
+
+            // --- CHỜ 0.8 GIÂY (800ms) CHO HỘP QUÀ RUNG LẮC XONG MỚI NỔ THẬT ---
+            // (Thời gian 800ms này khớp với animation: violent-explode 0.8s ở CSS)
+            setTimeout(function() {
+                
+                // --- BÂY GIỜ MỚI LÀ LÚC "BÙM" THẬT SỰ ---
+
+                // Ẩn màn hình quà đi
+                document.getElementById('gift-screen').style.display = 'none';
+                // Hiện màn hình chúc mừng
+                document.getElementById('celebration-screen').style.display = 'block';
+
+                // Phát tiếng nổ lớn
                 var explosion = document.getElementById('explosionSound');
                 if (explosion) {
                     explosion.volume = 1.0;
-                    explosion.play();
+                    explosion.currentTime = 0; // Tua lại từ đầu để chắc chắn phát
+                    explosion.play().catch(e => console.log("Chưa tải được âm thanh nổ"));
                 }
 
-            // 2. (Mới) Lệnh chờ 2 giây (2000 mili giây) trước khi nổ
-            setTimeout(function() {
-                
-                // --- BẮT ĐẦU CÁC HÀNH ĐỘNG CŨ (Đã được đưa vào trong lệnh chờ) ---
-
-                // Ẩn hộp quà, hiện lời chúc
-                document.getElementById('gift-screen').style.display = 'none';
-                document.getElementById('celebration-screen').style.display = 'block';
-
-               
-
-                // Phát nhạc nền (Sau khi nổ 0.5s thì nhạc lên)
+                // Phát nhạc nền sau một chút
                 setTimeout(function() {
                     var music = document.getElementById('bgMusic');
                     if (music) {
                         music.volume = 0.7;
-                        music.play();
+                        music.play().catch(e => console.log("Chưa tải được nhạc nền"));
                     }
-                }, 250);
+                }, 300);
 
-                // Hiệu ứng hình ảnh
+                // Hiệu ứng pháo hoa lớn tưng bừng
                 fireworks();
+                // Hiệu ứng tuyết rơi
                 setInterval(createSnowflake, 100);
 
-                // --- KẾT THÚC CÁC HÀNH ĐỘNG CŨ ---
-
-            }, 2000); // <-- Số 2000 ở đây là 2 giây. Bạn có thể sửa thành 3000 nếu muốn chờ lâu hơn.
+            }, 800); // <-- Sau 800ms thì thực hiện đoạn trong ngoặc này
         }
 
         // Hàm bắn pháo hoa
