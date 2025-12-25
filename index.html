@@ -21,7 +21,7 @@
             flex-direction: column;
         }
 
-        /* --- Màn hình 1: Hộp quà --- */
+        
         #gift-screen {
             cursor: pointer;
             z-index: 100;
@@ -36,9 +36,9 @@
             transition: all 0.5s;
         }
 
-        /* Trạng thái SẮP NỔ: Phình to, rung mạnh, hóa đỏ */
+     
         .gift-exploding {
-            animation: violent-explode 0.8s forwards ease-in !important; /* !important để ép buộc chạy */
+            animation: violent-explode 0.8s forwards ease-in !important; 
             pointer-events: none; /* Khóa không cho bấm nữa */
         }
 
@@ -49,7 +49,7 @@
             animation: blink 1.5s infinite;
         }
 
-        /* --- Màn hình 2: Lời chúc --- */
+      
         #celebration-screen {
             display: none;
             text-align: center;
@@ -66,7 +66,7 @@
             margin-bottom: 20px;
         }
  h1, p {
-    /* Đổi sang font Dancing Script hỗ trợ tiếng Việt 100% */
+   
     font-family: 'Dancing Script', cursive;
     font-weight: 400;
 }
@@ -113,50 +113,50 @@ p {
 
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* Các class phụ trợ */
+      
         .wobble { animation: wobble 2s infinite ease-in-out; display: inline-block; }
         .icons-row { font-size: 3rem; margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
         .icon-item { animation: wobble 2s infinite ease-in-out; }
         .snowflake { position: fixed; top: -10px; color: white; user-select: none; pointer-events: none; animation-name: fall; animation-timing-function: linear; z-index: 1; }
         @keyframes fall { to { transform: translateY(105vh); } }
-        /* --- (MỚI) Class cho các ảnh trang trí bay lơ lửng --- */
+      
         .decor-img {
-            position: absolute; /* Cho phép đặt đâu tùy thích */
-            z-index: 40; /* Nằm dưới ảnh chính (z-index 50) để không che mất nội dung */
+            position: absolute; 
+            z-index: 40; 
         }
         
-        /* Mẹo nhỏ: Khi màn hình điện thoại quá nhỏ, ẩn bớt các ảnh ở góc đi cho đỡ rối */
+      
         @media (max-width: 600px) {
             .hide-on-mobile { display: none; }
-            /* --- (MỚI) Hiệu ứng "Ngôi sao" cho ảnh chính --- */
+           
 .main-photo-highlight {
-    width: 350px; /* Làm ảnh to hơn */
+    width: 350px; 
     border-radius: 20px;
-    /* Tạo viền vàng và hiệu ứng hào quang tỏa sáng mạnh mẽ */
+   
     border: 4px solid #ffd700;
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2);
-    /* Hiệu ứng "thở" nhẹ nhàng */
+   
     animation: pulse-glow 3s infinite alternate ease-in-out;
-    /* Đảm bảo nó nằm trên cùng */
+   
     position: relative;
     z-index: 60;
 }
 
-        /* Định nghĩa hiệu ứng "thở" và đổi màu hào quang */
+      
         @keyframes pulse-glow {
         0% {
             transform: scale(1);
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2);
         }
         100% {
-            transform: scale(1.05); /* Phóng to nhẹ */
-        /* Hào quang sáng hơn và đổi sang màu cam ấm */
+            transform: scale(1.05); 
+       
             box-shadow: 0 0 60px rgba(255, 165, 0, 0.7), 0 0 100px rgba(255, 165, 0, 0.4);
             border-color: #ffa500;
     }
 }
 
-/* Làm cho chữ và icon bớt nổi bật để nhường chỗ cho ảnh */
+
 .celebration-text, .icons-row {
     opacity: 0.8; /* Làm mờ nhẹ */
     transform: scale(0.9); /* Thu nhỏ nhẹ */
