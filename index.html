@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giáng Sinh An Lành!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            background: #051937;
+            background-image: radial-gradient(circle, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+            color: white;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 { font-size: 3rem; text-shadow: 2px 2px 10px #ff0000; }
+
+        /* Hiệu ứng hình ảnh lắc lư */
+        .wobble {
+            width: 150px;
+            animation: wobble 2s infinite ease-in-out;
+            cursor: pointer;
+        }
+
+        @keyframes wobble {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-15deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .container { position: relative; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://png.pngtree.com/png-vector/20231109/ourmid/pngtree-christmas-tree-clip-art-png-image_10432363.png" class="wobble" alt="Noel">
+        <h1>Merry Christmas! 🎄</h1>
+        <p>Chúc bạn một mùa Giáng sinh ấm áp và an lành.</p>
+        <button onclick="launchExplosion()" style="padding: 10px 20px; border-radius: 20px; border: none; background: #ff0000; color: white; cursor: pointer;">Bấm để nhận quà!</button>
+    </div>
+
+    <script>
+        // Hiệu ứng phát nổ khi trang web load
+        window.onload = function() {
+            launchExplosion();
+        };
+
+        function launchExplosion() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+    </script>
+</body>
+</html>
