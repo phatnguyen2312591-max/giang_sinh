@@ -9,7 +9,7 @@
         body {
             margin: 0; padding: 0;
             background: #051937;
-            background-image: radial-gradient(circle, #a80000, #540000, #2b0000);
+            background-image: radial-gradient(circle at center, #3e2b38, #1a1217 80%);
             color: white;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
@@ -114,7 +114,39 @@
         /* Mẹo nhỏ: Khi màn hình điện thoại quá nhỏ, ẩn bớt các ảnh ở góc đi cho đỡ rối */
         @media (max-width: 600px) {
             .hide-on-mobile { display: none; }
+            /* --- (MỚI) Hiệu ứng "Ngôi sao" cho ảnh chính --- */
+.main-photo-highlight {
+    width: 350px; /* Làm ảnh to hơn */
+    border-radius: 20px;
+    /* Tạo viền vàng và hiệu ứng hào quang tỏa sáng mạnh mẽ */
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2);
+    /* Hiệu ứng "thở" nhẹ nhàng */
+    animation: pulse-glow 3s infinite alternate ease-in-out;
+    /* Đảm bảo nó nằm trên cùng */
+    position: relative;
+    z-index: 60;
+}
+
+        /* Định nghĩa hiệu ứng "thở" và đổi màu hào quang */
+        @keyframes pulse-glow {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.2);
         }
+        100% {
+            transform: scale(1.05); /* Phóng to nhẹ */
+        /* Hào quang sáng hơn và đổi sang màu cam ấm */
+            box-shadow: 0 0 60px rgba(255, 165, 0, 0.7), 0 0 100px rgba(255, 165, 0, 0.4);
+            border-color: #ffa500;
+    }
+}
+
+/* Làm cho chữ và icon bớt nổi bật để nhường chỗ cho ảnh */
+.celebration-text, .icons-row {
+    opacity: 0.8; /* Làm mờ nhẹ */
+    transform: scale(0.9); /* Thu nhỏ nhẹ */
+}
 
     </style>
 </head>
@@ -131,7 +163,7 @@
          <img src="vat3.png" class="decor-img wobble hide-on-mobile" style="bottom: 5%; left: 8%; width: 140px ;" alt="Tất">
          <img src="vat4.png" class="decor-img wobble" style="bottom: 12%; right: 10%; width: 100px;" alt="Cây thông nhỏ">
          <img src="noel.jpg" class="main-photo wobble" alt="Ảnh Giáng Sinh">
-        <h1 class="wobble"> 🎄 Merry Christmas 🎄</h1>
+        <h1 class="celebration-text"> 🎄 Merry Christmas 🎄</h1>
         <p>Chúc bạn một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui!</p>
         <div class="icons-row">
             <div class="icon-item">🎅</div>
