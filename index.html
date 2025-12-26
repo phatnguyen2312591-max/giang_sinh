@@ -278,6 +278,7 @@ p {
         var santaContainer = document.getElementById('santa-sleigh-container');
         var bellSound = document.getElementById('sleighBellSound');
         if (santaContainer) {
+            santaContainer.style.display = 'block';
             santaContainer.classList.add('santa-flying-active'); // Xe bắt đầu bay
             // Phát tiếng chuông xe
             if (bellSound) { bellSound.volume = 0.8; bellSound.currentTime = 0; bellSound.play().catch(e => {}); }
