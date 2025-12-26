@@ -177,10 +177,10 @@ p {
 
         /* Ảnh chiếc xe */
         .santa-img {
-            width: 80%; /* Kích thước cơ bản */
-            position: absolute;
-            will-change: transform; 
-            transform: translate3d(0, 0, 0);
+            widtw: 50%/* Kích thước cơ bản */
+            on: absolute;
+            wilange: transform; 
+            trarm: translate3d(0, 0, 0);
         }
 
         /* 2. Kịch bản bay: Từ xa bên trái -> Gần giữa -> Xa bên phải */
@@ -194,67 +194,7 @@ p {
         opacity: 0; /* Mờ dần khi bắt đầu */
     }
 
-    /* GIAI ĐOẠN 2: SÀ XUỐNG GIỮA MÀN HÌNH (Điểm nhấn) */
-    40% {
-        opacity: 1; /* Hiện rõ nhất */
-        /* Vị trí: Gần giữa màn hình, sà xuống thấp (20% chiều dọc) */
-        transform: translate3d(-10vw, 20vh, 0) scale(1.2) rotate(0deg);
-        /* Hiệu ứng: To nhất (scale 1.2), xe đi thăng bằng */
-    }
-
-    /* GIAI ĐOẠN 3: BAY VÚT ĐI */
-    100% {
-        /* Vị trí: Xa tít bên phải (130% chiều ngang), bay vút lên cao (-50% chiều dọc) */
-        transform: translate3d(130vw, -50vh, 0) scale(0.5) rotate(10deg);
-        /* Hiệu ứng: Nhỏ lại, đầu xe chúc xuống một chút */
-        opacity: 0.8;
-    }        }
-
-        /* Class này sẽ được JS thêm vào để bắt đầu diễn */
-.santa-flying-active {
-     display: block !important;
-        }
-.santa-flying-active .santa-img {
-            /* Chạy animation trong 7 giây một cách mượt mà */
-     animation: santa-flyby-3d 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-     }
-    </style>
-</head>
-<body>
-
-    <div id="gift-screen" onclick="openGift()">
-        <div class="gift-box">🎁</div> 
-        <div class="click-hint">Nhấn vào hộp quà để mở!</div>
-    </div>
-
-    <div id="celebration-screen">
-        <img src="vat1.png" class="decor-img wobble" style="top: 5%; left: 10%; width: 80px;" alt="Kẹo">
-         <img src="vat2.png" class="decor-img wobble" style="top: 8%; right: 5%; width: 100px;" alt="Chuông">
-         <img src="vat3.png" class="decor-img wobble hide-on-mobile" style="bottom: 5%; left: 8%; width: 70px ;" alt="Tất">
-         <img src="vat4.png" class="decor-img wobble" style="bottom: 12%; right: 5%; width: 90px;" alt="Cây thông nhỏ">
-         <img src="noel.jpg" class="main-photo wobble" alt="Ảnh Giáng Sinh">
-        <h1 class="celebration-text"> 🎄Merry Christmas🎄</h1>
-        <p>Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui!</p>
-        <div class="icons-row">
-            <div class="icon-item">🎅</div>
-            <div class="icon-item">⛄</div>
-            <div class="icon-item">🦌</div>
-            <div class="icon-item">🔔</div>
-        </div>
-    </div>
-
-    <audio id="bgMusic" loop>
-        <source src="nhac.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sleighBellSound">
-        <source src="chuong.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="explosionSound">
-        <source src="phaohoa.mp3" type="audio/mpeg">
-    </audio>
-     <div id="santa-sleigh-container" style="display: none;">
-        <img src="santa.png" class="santa-img" alt="Merry Christmas" style="max-width: 50%; border-radius: 15px; box-shadow: 0 0 30px gold;">
+    /* GIAI ĐO3: ; %; border-rad: s: 1; x; box-sha: w    0 3 px gold
     </div>
     <script>
         function openGift() {
