@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,8 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background: #051937;
             background-image: radial-gradient(circle, #a80000, #540000, #2b0000);
             color: white;
@@ -26,12 +24,12 @@
         /* --- PHẦN 1: HỘP QUÀ --- */
         #gift-screen {
             cursor: pointer;
-            z-index: 9999;
-            position: relative;
+            z-index: 99999; /* Ưu tiên cao nhất để click được */
+            position: relative; /* Bắt buộc có để nhận z-index */
             transition: all 0.3s;
+            padding: 50px; /* Tăng vùng bấm */
         }
         
-        /* Trạng thái bình thường: Rung nhẹ */
         .gift-box {
             font-size: 150px;
             animation: shake 2s infinite; 
@@ -41,7 +39,6 @@
             user-select: none;
         }
 
-        /* Trạng thái nổ tung */
         .gift-exploding {
             animation: violent-explode 0.8s forwards ease-in !important;
             pointer-events: none;
@@ -54,7 +51,7 @@
             animation: blink 1.5s infinite;
         }
 
-        /* --- PHẦN 2: LỜI CHÚC (Hiện ra sau cùng) --- */
+        /* --- PHẦN 2: LỜI CHÚC --- */
         #celebration-screen {
             display: none;
             opacity: 0; 
@@ -63,47 +60,50 @@
             width: 90%;
             max-width: 600px;
             z-index: 50;
-            position: relative; /* Để chứa các vật trang trí tuyệt đối */
+            position: relative;
         }
 
-        .main-photo {
-            width: 250px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            border: 5px solid white;
-            margin-bottom: 20px;
-        }
-        
         .main-photo-highlight {
-            width: 300px; 
+            width: 300px;
             border-radius: 20px;
             border: 4px solid #ffd700;
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
             animation: pulse-glow 3s infinite alternate ease-in-out;
             position: relative;
             z-index: 60;
-            max-width: 80vw; /* Đảm bảo không bị tràn màn hình đt */
-        }
-
-        h1, p {
-            font-family: 'Dancing Script', cursive;
-            font-weight: 400;
+            max-width: 80vw;
         }
 
         h1 {
+            font-family: 'Dancing Script', cursive;
+            font-weight: 700;
             font-size: 3.5rem;
             color: #fffce0;
             text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
             margin-bottom: 5px;
         }
 
-        p {
-            font-size: 1.5rem;
-            color: #ffffff;
-            line-height: 1.6;
+        /* --- CODE CHỮ CHẠY (TYPEWRITER) --- */
+        #loi-chuc {
+              font-family: 'Dancing Script', cursive;
+              font-size: 28px;
+              color: #fff;
+              line-height: 1.5;
+              white-space: pre-wrap; 
+              overflow: hidden;
+              border-right: 3px solid white; /* Con trỏ nhấp nháy */
+              padding-right: 5px;
+              animation: blink-caret 0.75s step-end infinite;
+              display: inline-block;
+              max-width: 80%;
         }
 
-        /* --- CÁC HIỆU ỨNG ANIMATION --- */
+        @keyframes blink-caret {
+              from, to { border-color: transparent }
+              50% { border-color: white; }
+        }
+
+        /* --- ANIMATION --- */
         @keyframes shake {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(5deg); }
@@ -113,9 +113,7 @@
 
         @keyframes violent-explode {
             0% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
-            20% { transform: scale(1.2) rotate(-10deg); filter: hue-rotate(90deg); }
-            40% { transform: scale(1.4) rotate(10deg); filter: hue-rotate(180deg); }
-            60% { transform: scale(1.6) rotate(-10deg); filter: hue-rotate(270deg); opacity: 0.8; }
+            50% { transform: scale(1.6) rotate(-10deg); filter: hue-rotate(180deg); opacity: 0.8; }
             100% { transform: scale(3); opacity: 0; }
         }
 
@@ -129,90 +127,50 @@
             100% { transform: scale(1.05); box-shadow: 0 0 60px rgba(255, 165, 0, 0.7); border-color: #ffa500; }
         }
 
+        .wobble { animation: wobble 2s infinite ease-in-out; display: inline-block; }
         @keyframes wobble { 
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            75% { transform: rotate(-10deg); }
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
 
-        .wobble { animation: wobble 2s infinite ease-in-out; display: inline-block; }
         .icons-row { font-size: 3rem; margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
         
         .snowflake { 
             position: fixed; top: -10px; color: white; 
             user-select: none; pointer-events: none;
-            animation-name: fall; animation-timing-function: linear; z-index: 1; 
+            animation-name: fall; animation-timing-function: linear; z-index: 1;
         }
         @keyframes fall { to { transform: translateY(105vh); } }
       
         .decor-img { position: absolute; z-index: 40; }
-        @media (max-width: 600px) { .hide-on-mobile { display: none; } }
 
-        /* --- (MỚI - ĐÃ SỬA LỖI) HIỆU ỨNG XE TUẦN LỘC BAY 3D --- */
+        /* --- XE TUẦN LỘC (Đã Fix Click) --- */
         #santa-sleigh-container {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            pointer-events: none;
+            pointer-events: none !important; /* QUAN TRỌNG: Cho phép click xuyên qua */
             z-index: 200;
-            display: none; /* Mặc định ẩn */
+            display: none;
         }
 
-        /* Đã sửa lỗi chính tả ở đây */
         .santa-img {
-            width: 300px; /* Kích thước vừa phải */
+            width: 300px;
             position: absolute;
             will-change: transform; 
-            transform: translate3d(0, 0, 0);
         }
 
-        /* Kịch bản bay vòng cung đẹp mắt */
         @keyframes santa-cinematic-fly {
-            0% {
-                transform: translate3d(-120vw, -20vh, 0) scale(0.5) rotate(-10deg);
-                opacity: 0;
-            }
-            40% {
-                opacity: 1;
-                transform: translate3d(calc(50vw - 150px), 45vh, 0) scale(1.5) rotate(0deg);
-            }
-            100% {
-                transform: translate3d(120vw, -40vh, 0) scale(0.6) rotate(10deg);
-                opacity: 0.8;
-            }
+            0% { transform: translate3d(-120vw, -20vh, 0) scale(0.5) rotate(-10deg); opacity: 0; }
+            40% { opacity: 1; transform: translate3d(calc(50vw - 150px), 45vh, 0) scale(1.5) rotate(0deg); }
+            100% { transform: translate3d(120vw, -40vh, 0) scale(0.6) rotate(10deg); opacity: 0.8; }
         }
 
-        .santa-flying-active {
-            display: block !important;
-        }
+        .santa-flying-active { display: block !important; }
         
         .santa-flying-active .santa-img {
-            /* Bay trong 7 giây */
             animation: santa-cinematic-fly 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        #loi-chuc {
-              font-family: 'Dancing Script', cursive; /* Hoặc font chữ bạn đang dùng */
-              font-size: 28px;
-              color: #fff;
-                line-height: 1.5;
-              white-space: pre-wrap; /* Giữ định dạng xuống dòng nếu có */
-              overflow: hidden; /* Ẩn phần chữ chưa chạy ra */
-              border-right: 3px solid white; /* Dấu con trỏ soạn thảo */
-                padding-right: 5px;
-              animation: blink-caret 0.75s step-end infinite;
-              display: inline-block;
-              max-width: 80%; /* Giới hạn chiều rộng để chữ tự xuống dòng đẹp hơn */
-        }
-
-/* Hiệu ứng nhấp nháy của con trỏ */
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: white; }
-}
-        /* Thêm đoạn này vào cuối thẻ style để chắc chắn */
-    #santa-sleigh-container, .snowflake {
-        pointer-events: none !important; /* Cho phép click xuyên qua */
-}
+        } 
     </style>
 </head>
 <body>
@@ -227,15 +185,17 @@
         <img src="vat2.png" class="decor-img wobble" style="top: 12%; right: 5%; width: 100px;" alt="Decor">
         <img src="vat3.png" class="decor-img wobble" style="top: 55%; left: 1%; width: 100px;" alt="Decor">
         <img src="vat4.png" class="decor-img wobble" style="top: 55%; right: 2%; width: 100px;" alt="Decor">
+        
         <img src="noel.jpg" class="main-photo-highlight" alt="Ảnh Giáng Sinh">
         
         <h1>🎄 Merry Christmas 🎄</h1>
-    <div class="container">
-        <div style="text-align: center;"> <p id="loi-chuc"></p>
+        
+        <div class="container" style="min-height: 80px;"> <div style="text-align: center;"> 
+                <p id="loi-chuc"></p>
+            </div>
         </div>
-        <div class="icons">...</div>
-    </div>
-         <div class="icons-row">
+        
+        <div class="icons-row">
             <div class="icon-item wobble">🎅</div>
             <div class="icon-item wobble">⛄</div>
             <div class="icon-item wobble">🦌</div>
@@ -243,91 +203,99 @@
         </div>
     </div>
 
-    <div id="santa-sleigh-container" style="display: none;">
-        <img src="santa.png" class="santa-img" alt="Santa Claus Flying">
+    <div id="santa-sleigh-container">
+        <img src="santa.png" class="santa-img" alt="Santa Claus">
     </div>
 
-    <audio id="bgMusic" loop>
-        <source src="nhac.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sleighBellSound">
-        <source src="chuong.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="explosionSound">
-        <source src="phaohoa.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bgMusic" loop> <source src="nhac.mp3" type="audio/mpeg"> </audio>
+    <audio id="sleighBellSound"> <source src="chuong.mp3" type="audio/mpeg"> </audio>
+    <audio id="explosionSound"> <source src="phaohoa.mp3" type="audio/mpeg"> </audio>
 
     <script>
-        const text = "Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui! 🎄✨";
-        const element = document.getElementById("loi-chuc");
-        let index = 0;
-        const speed = 100; // Tốc độ chạy chữ
+        // --- 1. CẤU HÌNH BIẾN (Chỉ khai báo 1 lần ở đây) ---
+        const textConfig = "Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui! 🎄✨";
+        const speedConfig = 100; // Tốc độ chạy chữ
+        let textIndex = 0;
 
-    // 2. Hàm chạy chữ
+        // --- 2. HÀM CHẠY CHỮ ---
         function typeWriter() {
-            if (index < text.length) {
-                element.innerHTML += text.charAt(index);
-                index++;
-            setTimeout(typeWriter, speed);
+            const element = document.getElementById("loi-chuc");
+            if (!element) return;
+
+            if (textIndex < textConfig.length) {
+                element.innerHTML += textConfig.charAt(textIndex);
+                textIndex++;
+                setTimeout(typeWriter, speedConfig);
             } else {
-            element.style.borderRight = "none"; // Xóa con trỏ khi xong
+                element.style.borderRight = "none"; // Xóa con trỏ khi xong
+            }
         }
-    }
+
+        // --- 3. HÀM MỞ QUÀ ---
         function openGift() {
-            // 1. Tắt gợi ý & Rung hộp quà
+            console.log("Đã click mở quà!");
+
+            // Ẩn gợi ý
             var hint = document.querySelector('.click-hint');
             if (hint) hint.style.display = 'none';
+            
+            // Hiệu ứng nổ hộp quà
             var giftBox = document.querySelector('.gift-box');
             if (giftBox) giftBox.classList.add('gift-exploding');
 
-            // Bắn pháo mồi
-            confetti({ particleCount: 50, spread: 100, origin: { y: 0.5 }, colors: ['#ff0000', '#ffa500'], startVelocity: 30 });
+            // Bắn pháo giấy (Try-catch để tránh lỗi thư viện làm chết web)
+            try {
+                confetti({ particleCount: 50, spread: 100, origin: { y: 0.5 }, colors: ['#ff0000', '#ffa500'], startVelocity: 30 });
+            } catch (e) { console.log("Lỗi confetti:", e); }
 
-            // --- GIAI ĐOẠN 1: SAU 0.8 GIÂY -> HỘP QUÀ BIẾN MẤT & XE BAY ---
+            // --- CHUỖI SỰ KIỆN SAU 0.8 GIÂY ---
             setTimeout(function() {
-                // a. Ẩn hộp quà
+                // a. Ẩn màn hình quà
                 document.getElementById('gift-screen').style.display = 'none';
 
-                // b. Phát nhạc
+                // b. Âm thanh
                 var explosion = document.getElementById('explosionSound');
                 if (explosion) { explosion.volume = 1.0; explosion.currentTime = 0; explosion.play().catch(e => {}); }
+                
                 var music = document.getElementById('bgMusic');
                 if (music) { music.volume = 0.7; music.play().catch(e => {}); }
 
-                // c. KÍCH HOẠT XE TUẦN LỘC
+                // c. Xe Santa Bay
                 var santaContainer = document.getElementById('santa-sleigh-container');
                 var bellSound = document.getElementById('sleighBellSound');
                 
                 if (santaContainer) {
-                    santaContainer.style.display = 'block'; // Mở khóa
-                    santaContainer.classList.add('santa-flying-active'); // Ra lệnh bay
+                    santaContainer.style.display = 'block';
+                    santaContainer.classList.add('santa-flying-active');
                     
                     if (bellSound) { 
                         bellSound.volume = 0.8; bellSound.currentTime = 0; bellSound.play().catch(e => {}); 
                     }
                     
-                    // Ẩn khung xe sau khi bay xong (8s)
+                    // Ẩn xe sau 8s
                     setTimeout(() => { santaContainer.style.display = 'none'; }, 8000);
                 }
 
                 // d. Hiệu ứng nền
-                fireworks();
-                // Đã chỉnh lên 300 để máy tính đỡ lag
-                setInterval(createSnowflake, 200); 
+                try { fireworks(); } catch(e) {}
+                setInterval(createSnowflake, 200);
 
-                // --- GIAI ĐOẠN 2: CHỜ XE BAY ĐƯỢC 4 GIÂY MỚI HIỆN LỜI CHÚC ---
+                // --- GIAI ĐOẠN 2: HIỆN LỜI CHÚC (Sau 4s chờ xe bay) ---
                 setTimeout(function() {
                     var celebration = document.getElementById('celebration-screen');
                     if (celebration) {
                         celebration.style.display = 'block'; 
                         setTimeout(() => { celebration.style.opacity = 1; }, 50);
+                        
+                        // QUAN TRỌNG: Gọi hàm chạy chữ ở đây
+                        setTimeout(typeWriter, 1000); 
                     }
-                }, 4000); // 4 giây sau khi xe bay
+                }, 4000); 
 
-            }, 800); // 0.8 giây nổ hộp quà
+            }, 800);
         }
 
-        // Hàm pháo hoa
+        // --- CÁC HÀM PHỤ TRỢ ---
         function fireworks() {
             var duration = 4 * 1000;
             var animationEnd = Date.now() + duration;
@@ -336,11 +304,12 @@
                 var timeLeft = animationEnd - Date.now();
                 if (timeLeft <= 0) return clearInterval(interval);
                 var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                try {
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                } catch(e) { clearInterval(interval); }
             }, 250);
         }
 
-        // Hàm tạo tuyết
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
@@ -352,20 +321,6 @@
             document.body.appendChild(snowflake);
             setTimeout(() => { snowflake.remove(); }, 5000);
         }
-
-      const text = "Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui! 🎄✨";
-      const element = document.getElementById("loi-chuc");
-      let index = 0;
-      const speed = 100; // Tốc độ chạy chữ (càng nhỏ càng nhanh)
-
-      function typeWriter() {
-        if (index < text.length) {
-          element.innerHTML += text.charAt(index);
-          index++;
-          setTimeout(typeWriter, speed);
-        } else {
-          element.style.borderRight = "none"; // Xóa dấu nháy khi chạy xong
-        }
-      }
     </script>
-    </body> </html>
+</body>
+</html>
