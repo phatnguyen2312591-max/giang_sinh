@@ -188,12 +188,14 @@
             /* Bay trong 7 giây */
             animation: santa-cinematic-fly 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         #loi-chuc {
-              font-family: 'Arial', sans-serif; /* Hoặc font chữ bạn đang dùng */
-              font-size: 18px;
+              font-family: 'Dancing Script', cursive; /* Hoặc font chữ bạn đang dùng */
+              font-size: 28px;
               color: #fff;
+                line-height: 1.5;
               white-space: pre-wrap; /* Giữ định dạng xuống dòng nếu có */
               overflow: hidden; /* Ẩn phần chữ chưa chạy ra */
-              border-right: 2px solid white; /* Dấu con trỏ soạn thảo */
+              border-right: 3px solid white; /* Dấu con trỏ soạn thảo */
+                padding-right: 5px;
               animation: blink-caret 0.75s step-end infinite;
               display: inline-block;
               max-width: 80%; /* Giới hạn chiều rộng để chữ tự xuống dòng đẹp hơn */
@@ -349,6 +351,11 @@
           element.style.borderRight = "none"; // Xóa dấu nháy khi chạy xong
         }
       }
-      window.onload = typeWriter;
+     window.onload = function() {
+    // Số 3000 nghĩa là đợi 3000ms (tức là 3 giây) rồi mới chạy
+    // Bạn canh xem Santa bay mất bao lâu thì điền số vào đây
+        setTimeout(typeWriter, 3000);
+         }
+        }
     </script>
     </body> </html>
