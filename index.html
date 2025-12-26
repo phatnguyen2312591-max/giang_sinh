@@ -202,16 +202,20 @@ p {
         }
 
         /* Class này sẽ được JS thêm vào để bắt đầu diễn */
-        .santa-flying-active {
-            display: block !important;
+.santa-flying-active {
+     display: block !important;
         }
-        .santa-flying-active .santa-img {
+.santa-flying-active .santa-img {
             /* Chạy animation trong 7 giây một cách mượt mà */
-            animation: santa-flyby-3d 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+     animation: santa-flyby-3d 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+    /* --- DÁN ĐOẠN NÀY VÀO CUỐI PHẦN CSS ĐỂ ĐỊNH NGHĨA CÁCH RUNG --- */
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            75% { transform: rotate(-3deg); }
         }
      }
-            
-
     </style>
 </head>
 <body>
@@ -308,7 +312,7 @@ p {
 
         // Hàm pháo hoa lớn
         function fireworks() {
-            var duration = 3 * 1000;
+            var duration = 4 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
