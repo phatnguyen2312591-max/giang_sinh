@@ -179,7 +179,8 @@ p {
         .santa-img {
             width: 50%; /* Kích thước cơ bản */
             position: absolute;
-            /* Sẽ được Javascript kích hoạt animation */
+            will-change: transform; 
+            transform: translate3d(0, 0, 0);
         }
 
         /* 2. Kịch bản bay: Từ xa bên trái -> Gần giữa -> Xa bên phải */
@@ -196,7 +197,7 @@ p {
             }
             100% {
                 /* Kết thúc: Bay xa tít bên phải, lên cao, nhỏ lại và mờ dần */
-                transform: translate(120vw, -50vh) scale(0.3) rotate(5deg);
+                transform: translate(120vw, -10vh) scale(1) rotate(5deg);
                 opacity: 0.8; filter: blur(2px);
             }
         }
@@ -244,7 +245,7 @@ p {
     <audio id="explosionSound">
         <source src="phaohoa.mp3" type="audio/mpeg">
     </audio>
-     <div id="santa-sleigh-container">
+     <div id="santa-sleigh-container" style="display: none;">
         <img src="santa.png" class="santa-img" alt="Merry Christmas" style="max-width: 10%; border-radius: 15px; box-shadow: 0 0 30px gold;">
     </div>
     <script>
