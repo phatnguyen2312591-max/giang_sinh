@@ -187,6 +187,23 @@
         .santa-flying-active .santa-img {
             /* Bay trong 7 giây */
             animation: santa-cinematic-fly 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        #loi-chuc {
+              font-family: 'Arial', sans-serif; /* Hoặc font chữ bạn đang dùng */
+              font-size: 18px;
+              color: #fff;
+              white-space: pre-wrap; /* Giữ định dạng xuống dòng nếu có */
+              overflow: hidden; /* Ẩn phần chữ chưa chạy ra */
+              border-right: 2px solid white; /* Dấu con trỏ soạn thảo */
+              animation: blink-caret 0.75s step-end infinite;
+              display: inline-block;
+              max-width: 80%; /* Giới hạn chiều rộng để chữ tự xuống dòng đẹp hơn */
+        }
+
+/* Hiệu ứng nhấp nháy của con trỏ */
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: white; }
+}
         }
     </style>
 </head>
@@ -194,18 +211,26 @@
 
     <div id="gift-screen" onclick="openGift()">
         <div class="gift-box">🎁</div> 
-        <div class="click-hint">Nhấn vào hộp quà để mở!</div>
+        <div class="click-hint">Quyên ơi mở quà đi nào!</div>
     </div>
 
     <div id="celebration-screen">
-        <img src="vat1.png" class="decor-img wobble" style="top: 15%; left: 4px; width: 80px;" alt="Decor">
-        <img src="vat2.png" class="decor-img wobble" style="top: 12%; right: 5px; width: 100px;" alt="Decor">
-        <img src="vat3.png" class="decor-img wobble" style="top: 55%; left: 1px; width: 100px;" alt="Decor">
-        <img src="vat4.png" class="decor-img wobble" style="top: 55%; right: 2px; width: 100px;" alt="Decor">
+        <img src="vat1.png" class="decor-img wobble" style="top: 15%; left: 4%; width: 80px;" alt="Decor">
+        <img src="vat2.png" class="decor-img wobble" style="top: 12%; right: 5%; width: 100px;" alt="Decor">
+        <img src="vat3.png" class="decor-img wobble" style="top: 55%; left: 1%; width: 100px;" alt="Decor">
+        <img src="vat4.png" class="decor-img wobble" style="top: 55%; right: 2%; width: 100px;" alt="Decor">
         <img src="noel.jpg" class="main-photo-highlight" alt="Ảnh Giáng Sinh">
         
         <h1>🎄 Merry Christmas 🎄</h1>
-        <p>Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui!</p>
+    <div class="container">
+        <img src="..." class="avatar">
+
+        <h1>Merry Christmas</h1>
+
+        <div style="text-align: center;"> <p id="loi-chuc"></p>
+        </div>
+        <div class="icons">...</div>
+    </div>
         
         <div class="icons-row">
             <div class="icon-item wobble">🎅</div>
@@ -309,6 +334,21 @@
             document.body.appendChild(snowflake);
             setTimeout(() => { snowflake.remove(); }, 5000);
         }
+
+      const text = "Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui! 🎄✨";
+      const element = document.getElementById("loi-chuc");
+      let index = 0;
+      const speed = 100; // Tốc độ chạy chữ (càng nhỏ càng nhanh)
+
+      function typeWriter() {
+        if (index < text.length) {
+          element.innerHTML += text.charAt(index);
+          index++;
+          setTimeout(typeWriter, speed);
+        } else {
+          element.style.borderRight = "none"; // Xóa dấu nháy khi chạy xong
+        }
+      }
+      window.onload = typeWriter;
     </script>
-</body>
-</html>
+    </body> </html>
