@@ -160,7 +160,54 @@ p {
 .celebration-text, .icons-row {
     opacity: 0.8; /* Làm mờ nhẹ */
     transform: scale(0.9); /* Thu nhỏ nhẹ */
-}
+}/* --- (MỚI) HIỆU ỨNG XE TUẦN LỘC BAY 3D --- */
+
+        /* 1. Trạng thái ban đầu: Ẩn đi */
+        #santa-sleigh-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none; /* Không chặn chuột khi bấm */
+            z-index: 200; /* Nằm trên tất cả mọi thứ */
+            display: none; /* Ẩn đi chờ lệnh */
+            overflow: hidden;
+        }
+
+        /* Ảnh chiếc xe */
+        .santa-img {
+            width: 400px; /* Kích thước cơ bản */
+            position: absolute;
+            /* Sẽ được Javascript kích hoạt animation */
+        }
+
+        /* 2. Kịch bản bay: Từ xa bên trái -> Gần giữa -> Xa bên phải */
+        @keyframes santa-flyby-3d {
+            0% {
+                /* Bắt đầu: Xa tít bên trái, dưới thấp, nhỏ xíu, hơi mờ */
+                transform: translate(-150%, 40vh) scale(0.3) rotate(-5deg);
+                opacity: 0.8; filter: blur(2px);
+            }
+            40% {
+                /* Giữa chừng: Bay đến gần nhất, to nhất, rõ nét nhất */
+                transform: translate(30vw, -10vh) scale(1.5) rotate(0deg);
+                opacity: 1; filter: blur(0px);
+            }
+            100% {
+                /* Kết thúc: Bay xa tít bên phải, lên cao, nhỏ lại và mờ dần */
+                transform: translate(120vw, -50vh) scale(0.3) rotate(5deg);
+                opacity: 0.8; filter: blur(2px);
+            }
+        }
+
+        /* Class này sẽ được JS thêm vào để bắt đầu diễn */
+        .santa-flying-active {
+            display: block !important;
+        }
+        .santa-flying-active .santa-img {
+            /* Chạy animation trong 7 giây một cách mượt mà */
+            animation: santa-flyby-3d 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+            
 
     </style>
 </head>
@@ -190,11 +237,15 @@ p {
     <audio id="bgMusic" loop>
         <source src="nhac.mp3" type="audio/mpeg">
     </audio>
-
+    <audio id="sleighBellSound">
+        <source src="chuong.mp3" type="audio/mpeg">
+    </audio>
     <audio id="explosionSound">
         <source src="phaohoa.mp3" type="audio/mpeg">
     </audio>
-
+    <div id="santa-sleigh-container">
+    <img src="https://i.imgur.com/wG6x9GZ.png" class="santa-img" alt="Santa Sleigh Flying">
+    </div>
     <script>
         function openGift() {
             // 1. Ẩn gợi ý ngay
@@ -213,7 +264,26 @@ p {
 
             // 4. Chờ 0.8 giây cho hiệu ứng nổ chạy xong mới hiện quà
             setTimeout(function() {
-                
+                // --- (MỚI) KÍCH HOẠT ÔNG GIÀ NOEL BAY ---
+                var santaContainer = document.getElementById('santa-sleigh-container');
+                var bellSound = document.getElementById('sleighBellSound');
+
+                if (santaContainer) {
+                    // Thêm class để bắt đầu animation bay
+                    santaContainer.classList.add('santa-flying-active');
+                    
+                    // Phát tiếng chuông leng keng (nếu có tải file)
+                    if (bellSound) {
+                        bellSound.volume = 0.8; bellSound.currentTime = 0;
+                        bellSound.play().catch(e => console.log("Chưa có file chuong.mp3"));
+                    }
+
+                    // Sau khi bay xong (7 giây), ẩn đi để không vướng víu
+                    setTimeout(() => {
+                        santaContainer.style.display = 'none';
+                    }, 7500);
+                }
+                // ----------------------------------------
                 // Ẩn màn hình quà
                 document.getElementById('gift-screen').style.display = 'none';
                 // Hiện màn hình chúc mừng
