@@ -187,6 +187,7 @@
         .santa-flying-active .santa-img {
             /* Bay trong 7 giây */
             animation: santa-cinematic-fly 7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
         #loi-chuc {
               font-family: 'Dancing Script', cursive; /* Hoặc font chữ bạn đang dùng */
               font-size: 28px;
@@ -206,7 +207,6 @@
       from, to { border-color: transparent }
       50% { border-color: white; }
 }
-        }
     </style>
 </head>
 <body>
@@ -252,6 +252,21 @@
     </audio>
 
     <script>
+        const text = "Chúc Quyên một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui! 🎄✨";
+        const element = document.getElementById("loi-chuc");
+        let index = 0;
+        const speed = 100; // Tốc độ chạy chữ
+
+    // 2. Hàm chạy chữ
+        function typeWriter() {
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
+                index++;
+            setTimeout(typeWriter, speed);
+            } else {
+            element.style.borderRight = "none"; // Xóa con trỏ khi xong
+        }
+    }
         function openGift() {
             // 1. Tắt gợi ý & Rung hộp quà
             var hint = document.querySelector('.click-hint');
@@ -346,10 +361,5 @@
           element.style.borderRight = "none"; // Xóa dấu nháy khi chạy xong
         }
       }
-     window.onload = function() {
-    // Số 3000 nghĩa là đợi 3000ms (tức là 3 giây) rồi mới chạy
-    // Bạn canh xem Santa bay mất bao lâu thì điền số vào đây
-        setTimeout(typeWriter, 8000);
-         }
     </script>
     </body> </html>
