@@ -52,6 +52,8 @@
       
         #celebration-screen {
             display: none;
+            opacity: 0; 
+            transition: opacity 3s ease-in;
             text-align: center;
             width: 90%;
             max-width: 600px;
@@ -244,74 +246,64 @@ p {
         <source src="phaohoa.mp3" type="audio/mpeg">
     </audio>
     <div id="santa-sleigh-container">
-    <img src="https://i.imgur.com/wG6x9GZ.png" class="santa-img" alt="Santa Sleigh Flying">
+    <img src="santa." class="santa-img" alt="Santa Sleigh Flying">
     </div>
     <script>
         function openGift() {
-            // 1. Ẩn gợi ý ngay
-            var hint = document.querySelector('.click-hint');
-            if (hint) hint.style.display = 'none';
+    // 1. Ẩn dòng chữ gợi ý
+    var hint = document.querySelector('.click-hint');
+    if (hint) hint.style.display = 'none';
 
-            // 2. Kích hoạt hiệu ứng "Sắp nổ"
-            var giftBox = document.querySelector('.gift-box');
-            if (giftBox) {
-                // Thêm class này để CSS kích hoạt animation violent-explode
-                giftBox.classList.add('gift-exploding');
-            }
+    // 2. Kích hoạt hiệu ứng rung lắc hộp quà
+    var giftBox = document.querySelector('.gift-box');
+    if (giftBox) giftBox.classList.add('gift-exploding');
 
-            // 3. Bắn pháo hoa nhỏ mồi lửa
-            confetti({ particleCount: 50, spread: 100, origin: { y: 0.5 }, colors: ['#ff0000', '#ffa500'], startVelocity: 30 });
+    // Bắn pháo mồi nhỏ
+    confetti({ particleCount: 50, spread: 100, origin: { y: 0.5 }, colors: ['#ff0000', '#ffa500'], startVelocity: 30 });
 
-            // 4. Chờ 0.8 giây cho hiệu ứng nổ chạy xong mới hiện quà
-            setTimeout(function() {
-                // --- (MỚI) KÍCH HOẠT ÔNG GIÀ NOEL BAY ---
-                var santaContainer = document.getElementById('santa-sleigh-container');
-                var bellSound = document.getElementById('sleighBellSound');
+    // --- GIAI ĐOẠN 1: SAU 0.8 GIÂY -> NỔ BÙM & XE BAY ---
+    setTimeout(function() {
+        
+        // a. Ẩn hộp quà đi
+        document.getElementById('gift-screen').style.display = 'none';
 
-                if (santaContainer) {
-                    // Thêm class để bắt đầu animation bay
-                    santaContainer.classList.add('santa-flying-active');
-                    
-                    // Phát tiếng chuông leng keng (nếu có tải file)
-                    if (bellSound) {
-                        bellSound.volume = 0.8; bellSound.currentTime = 0;
-                        bellSound.play().catch(e => console.log("Chưa có file chuong.mp3"));
-                    }
+        // b. Phát tiếng nổ & Nhạc nền ngay
+        var explosion = document.getElementById('explosionSound');
+        if (explosion) { explosion.volume = 1.0; explosion.currentTime = 0; explosion.play().catch(e => {}); }
+        
+        var music = document.getElementById('bgMusic');
+        if (music) { music.volume = 0.7; music.play().catch(e => {}); }
 
-                    // Sau khi bay xong (7 giây), ẩn đi để không vướng víu
-                    setTimeout(() => {
-                        santaContainer.style.display = 'none';
-                    }, 7500);
-                }
-                // ----------------------------------------
-                // Ẩn màn hình quà
-                document.getElementById('gift-screen').style.display = 'none';
-                // Hiện màn hình chúc mừng
-                document.getElementById('celebration-screen').style.display = 'block';
-
-                // Phát tiếng nổ
-                var explosion = document.getElementById('explosionSound');
-                if (explosion) {
-                    explosion.volume = 1.0;
-                    explosion.currentTime = 0;
-                    explosion.play().catch(e => console.log("Lỗi phát tiếng nổ"));
-                }
-
-                // Phát nhạc nền
-                setTimeout(function() {
-                    var music = document.getElementById('bgMusic');
-                    if (music) {
-                        music.volume = 0.7;
-                        music.play().catch(e => console.log("Lỗi phát nhạc"));
-                    }
-                }, 300);
-
-                // Hiệu ứng ăn mừng
-                fireworks();
-                setInterval(createSnowflake, 100);
-
-            }, 800); // 800ms trùng khớp với thời gian animation trong CSS
+        // c. KÍCH HOẠT XE TUẦN LỘC BAY NGAY LÚC NÀY
+        var santaContainer = document.getElementById('santa-sleigh-container');
+        var bellSound = document.getElementById('sleighBellSound');
+        if (santaContainer) {
+            santaContainer.classList.add('santa-flying-active'); // Xe bắt đầu bay
+            // Phát tiếng chuông xe
+            if (bellSound) { bellSound.volume = 0.8; bellSound.currentTime = 0; bellSound.play().catch(e => {}); }
+            // Ẩn xe sau khi bay xong (8 giây)
+            setTimeout(() => { santaContainer.style.display = 'none'; }, 8000);
         }
+
+        // d. Bắn pháo hoa nền (cho đỡ trống trải khi chờ xe bay)
+        fireworks();
+        setInterval(createSnowflake, 100);
+
+        // --- GIAI ĐOẠN 2: CHỜ XE BAY ĐƯỢC 4 GIÂY THÌ MỚI HIỆN LỜI CHÚC ---
+        setTimeout(function() {
+            var celebration = document.getElementById('celebration-screen');
+            if (celebration) {
+                celebration.style.display = 'block'; // Bắt đầu hiển thị (nhưng vẫn mờ)
+                
+                // Mẹo nhỏ: Phải chờ 1 chút xíu (10ms) để trình duyệt nhận lệnh display:block rồi mới tăng opacity
+                setTimeout(() => {
+                    celebration.style.opacity = 1; // Từ từ hiện rõ dần lên
+                }, 50);
+            }
+        }, 4000); // <-- Số 4000 này là chờ 4 giây. Bạn có thể tăng lên 5000 nếu muốn xe bay lâu hơn nữa.
+
+    }, 800); // (Hết rung lắc hộp quà)
+}
 
         // Hàm pháo hoa lớn
         function fireworks() {
