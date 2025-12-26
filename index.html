@@ -177,7 +177,7 @@ p {
 
         /* Ảnh chiếc xe */
         .santa-img {
-            widtw: 50%/* Kích thước cơ bản */
+            widtw: 40%/* Kích thước cơ bản */
             on: absolute;
             wilange: transform; 
             trarm: translate3d(0, 0, 0);
@@ -185,13 +185,27 @@ p {
 
         /* 2. Kịch bản bay: Từ xa bên trái -> Gần giữa -> Xa bên phải */
         @keyframes santa-flyby-3d {
-            0% {
             /* GIAI ĐOẠN 1: XUẤT PHÁT */
     0% {
         /* Vị trí: Xa tít bên trái (-120% chiều ngang), và ở trên cao (-30% chiều dọc) */
         transform: translate3d(-120vw, -30vh, 0) scale(0.4) rotate(-15deg);
         /* Hiệu ứng: Nhỏ xíu, đầu xe ngóc lên cao */
         opacity: 0; /* Mờ dần khi bắt đầu */
+        /* GIAI ĐOẠN 2: SÀ XUỐNG GIỮA MÀN HÌNH (Điểm nhấn) */
+    40% {
+        opacity: 1; /* Hiện rõ nhất */
+        /* Vị trí: Gần giữa màn hình, sà xuống thấp (20% chiều dọc) */
+        transform: translate3d(-10vw, 20vh, 0) scale(1.2) rotate(0deg);
+        /* Hiệu ứng: To nhất (scale 1.2), xe đi thăng bằng */
+    }
+
+    /* GIAI ĐOẠN 3: BAY VÚT ĐI */
+    100% {
+        /* Vị trí: Xa tít bên phải (130% chiều ngang), bay vút lên cao (-50% chiều dọc) */
+        transform: translate3d(130vw, -50vh, 0) scale(0.5) rotate(10deg);
+        /* Hiệu ứng: Nhỏ lại, đầu xe chúc xuống một chút */
+        opacity: 0.8;
+    }
     }
 
     /* GIAI ĐO3: ; %; border-rad: s: 1; x; box-sha: w    0 3 px gold
