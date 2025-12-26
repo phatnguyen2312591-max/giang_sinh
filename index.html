@@ -198,8 +198,8 @@
     </div>
 
     <div id="celebration-screen">
-        <img src="vat1.png" class="decor-img wobble" style="top: 8%; left: 10%; width: 80px;" alt="Decor">
-        <img src="vat2.png" class="decor-img wobble" style="top: 5%; right: 5%; width: 100px;" alt="Decor">
+        <img src="vat1.png" class="decor-img wobble" style="top: 8%; left: 2%; width: 80px;" alt="Decor">
+        <img src="vat2.png" class="decor-img wobble" style="top: 5%; right: 3%; width: 100px;" alt="Decor">
         <img src="vat3.png" class="decor-img wobble" style="bottom: 7%; left: 5%; width: 100px;" alt="Decor">
         <img src="vat4.png" class="decor-img wobble" style="bottom: 3%; right: 10%; width: 100px;" alt="Decor">
         <img src="noel.jpg" class="main-photo-highlight" alt="Ảnh Giáng Sinh">
@@ -270,7 +270,7 @@
                 // d. Hiệu ứng nền
                 fireworks();
                 // Đã chỉnh lên 300 để máy tính đỡ lag
-                setInterval(createSnowflake, 300); 
+                setInterval(createSnowflake, 200); 
 
                 // --- GIAI ĐOẠN 2: CHỜ XE BAY ĐƯỢC 4 GIÂY MỚI HIỆN LỜI CHÚC ---
                 setTimeout(function() {
@@ -305,7 +305,7 @@
             snowflake.style.left = Math.random() * 100 + 'vw';
             snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
             snowflake.style.opacity = Math.random();
-            snowflake.style.fontSize = Math.random() * 20 + 10 + 'px';
+            snowflake.style.fontSize = Math.random() * 20 + 20 + 'px';
             document.body.appendChild(snowflake);
             setTimeout(() => { snowflake.remove(); }, 5000);
         }
